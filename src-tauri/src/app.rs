@@ -5,8 +5,8 @@ use tauri::{
 };
 
 //
-pub fn create_menu() -> Menu {
-    Menu::default()
+pub fn create_menu(pkg: &PackageInfo) -> Menu {
+    Menu::os_default(&pkg.name.to_string())
 }
 
 pub fn create_system_tray(pkg: &PackageInfo) -> SystemTray {
