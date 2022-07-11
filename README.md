@@ -1,4 +1,6 @@
-# ghosts
+# gHosts
+
+[![publish](https://github.com/minosss/ghosts/actions/workflows/publish.yml/badge.svg)](https://github.com/minosss/ghosts/actions/workflows/publish.yml)
 
 ![screenshot](/screenshot.png)
 
