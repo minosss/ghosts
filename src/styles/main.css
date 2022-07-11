@@ -1,0 +1,29 @@
+.app {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background: white;
+}
+
+.hosts-view {
+	--sidebar-width: 280px;
+
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-template-columns: var(--sidebar-width) 1fr;
+	grid-template-areas:
+		"navbar navbar"
+		"sidebar content"
+	;
+	height: 100%;
+	overflow: hidden;
+}
+
+#editor {
+	height: 100%;
+	overflow-y: auto;
+}
+
+#editor .cm-editor {
+	height: 100%;
+}

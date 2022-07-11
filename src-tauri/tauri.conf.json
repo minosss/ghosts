@@ -1,0 +1,91 @@
+{
+	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
+	"build": {
+		"beforeBuildCommand": "pnpm build",
+		"beforeDevCommand": "pnpm dev",
+		"devPath": "http://localhost:3000",
+		"distDir": "../dist"
+	},
+	"package": {
+		"productName": "gHosts",
+		"version": "0.1.0"
+	},
+	"tauri": {
+		"allowlist": {
+			"all": true,
+			"fs": {
+				"all": true,
+				"scope": ["*"]
+			},
+			"http": {
+				"all": true,
+				"scope": ["https://**"]
+			},
+			"shell": {
+				"all": true,
+				"scope": [
+					{"name": "sh", "cmd": "sh", "args": ["-c", {"validator": "\\S+"}]},
+					{
+						"name": "cmd",
+						"cmd": "cmd",
+						"args": ["/C", {"validator": "\\S+"}]
+					}
+				]
+			}
+		},
+		"systemTray": {
+			"iconPath": "icons/tray.png",
+			"iconAsTemplate": true
+		},
+		"bundle": {
+			"active": true,
+			"category": "DeveloperTool",
+			"copyright": "Apache-2.0",
+			"deb": {
+				"depends": []
+			},
+			"icon": [
+				"icons/32x32.png",
+				"icons/128x128.png",
+				"icons/128x128@2x.png",
+				"icons/icon.icns",
+				"icons/icon.ico"
+			],
+			"identifier": "com.kagabase.ghosts",
+			"longDescription": "",
+			"macOS": {
+				"entitlements": null,
+				"exceptionDomain": "",
+				"frameworks": [],
+				"providerShortName": null,
+				"signingIdentity": null,
+				"license": "../LICENSE"
+			},
+			"resources": [],
+			"shortDescription": "stystem hosts editor",
+			"targets": "all",
+			"windows": {
+				"certificateThumbprint": null,
+				"digestAlgorithm": "sha256",
+				"timestampUrl": ""
+			}
+		},
+		"security": {
+			"csp": null
+		},
+		"updater": {
+			"active": false,
+			"dialog": true,
+			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZBQTFDQkQyQjlEMDdCQjQKUldTMGU5QzUwc3VoK3EwWWt0Y2dSaU5kZWM2TVRLdEdsbllVOFJJeUhiSFBMckNCQmZlS0VGVnQK"
+		},
+		"windows": [
+			{
+				"height": 600,
+				"width": 900,
+				"title": "gHosts",
+				"fullscreen": false,
+				"resizable": true
+			}
+		]
+	}
+}
