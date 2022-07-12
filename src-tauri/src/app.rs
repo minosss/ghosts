@@ -1,7 +1,6 @@
 use tauri::{
-    AppHandle, CustomMenuItem, Manager, Menu, RunEvent,
-    SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem, WindowEvent, Wry,
-	PackageInfo
+    AppHandle, CustomMenuItem, Manager, Menu, PackageInfo, RunEvent, SystemTray, SystemTrayEvent,
+    SystemTrayMenu, SystemTrayMenuItem, WindowEvent, Wry,
 };
 
 //
@@ -13,12 +12,17 @@ pub fn create_system_tray(pkg: &PackageInfo) -> SystemTray {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
     let hide = CustomMenuItem::new("toggle".to_string(), "Toggle");
 
-	let version = CustomMenuItem::new("version".to_string(), std::format!("{} v{}", pkg.name, pkg.version)).disabled();
-    let check_for_updates = CustomMenuItem::new("update".to_string(), "Check for Updates...").disabled();
+    let version = CustomMenuItem::new(
+        "version".to_string(),
+        std::format!("{} v{}", pkg.name, pkg.version),
+    )
+    .disabled();
+    let check_for_updates =
+        CustomMenuItem::new("update".to_string(), "Check for Updates...").disabled();
 
     let tray_menu = SystemTrayMenu::new()
         .add_item(hide)
-		.add_item(version)
+        .add_item(version)
         .add_native_item(SystemTrayMenuItem::Separator)
         .add_item(check_for_updates)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -35,7 +39,7 @@ pub fn handle_system_tray_event(app: &AppHandle<Wry>, event: SystemTrayEvent) {
             ..
         } => {
             // println!("click tray");
-			// show window?
+            // show window?
         }
         SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
             "quit" => app.exit(0),
