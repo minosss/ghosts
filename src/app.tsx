@@ -16,7 +16,16 @@ const theme = extendTheme(
 	withDefaultSize({
 		size: 'sm',
 		components: ['Button', 'Input', 'Radio', 'Switch'],
-	})
+	}),
+	{
+		components: {
+			FormLabel: {
+				baseStyle: {
+					fontSize: 'sm',
+				},
+			},
+		},
+	}
 );
 
 let installed = false;
