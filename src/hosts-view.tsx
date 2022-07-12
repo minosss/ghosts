@@ -57,11 +57,16 @@ export default function HostsView() {
 
 	return (
 		<div className='hosts-view'>
-			<Flex gridArea='navbar' boxShadow='sm' flexFlow='column'>
+			<Flex
+				gridArea='navbar'
+				boxShadow='sm'
+				flexFlow='column'
+				onContextMenu={(e) => e.preventDefault()}
+			>
 				{/* titlebar */}
 				<Navbar></Navbar>
 			</Flex>
-			<Box gridArea='sidebar' overflow='hidden'>
+			<Box gridArea='sidebar' overflow='hidden' onContextMenu={(e) => e.preventDefault()}>
 				<HostList
 					hosts={hosts}
 					activeHost={activeHost}
