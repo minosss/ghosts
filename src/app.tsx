@@ -7,7 +7,6 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import {useEffect, useState} from 'react';
-import {isDefined} from '@chakra-ui/utils';
 import {install} from './utils/install';
 import HostsView from './hosts-view';
 import {useStore} from './store';
@@ -20,10 +19,7 @@ const theme = extendTheme(
 	})
 );
 
-if (isDefined(window)) {
-	install();
-}
-
+let installed = false;
 function App() {
 	const [loading, setLoading] = useState(true);
 	const toast = useToast({duration: 2000});
@@ -34,10 +30,29 @@ function App() {
 		let ignore = false;
 
 		async function load() {
-			const hosts = await readHosts();
-			if (!ignore) {
-				dispatch({type: 'reset:host', payload: hosts});
-				setLoading(false);
+			if (!installed) {
+				try {
+					await install();
+					installed = true;
+				} catch (error: any) {
+					const {message} = await import('@tauri-apps/api/dialog');
+					await message(error.toString(), {
+						title: 'Installation failed',
+						type: 'error',
+					});
+					return;
+				}
+			}
+
+			try {
+				const hosts = await readHosts();
+				if (!ignore) {
+					dispatch({type: 'reset:host', payload: hosts});
+					setLoading(false);
+				}
+			} catch (error: any) {
+				const {message} = await import('@tauri-apps/api/dialog');
+				await message(error.toString(), {title: 'Error loading hosts', type: 'error'});
 			}
 		}
 
