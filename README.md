@@ -10,7 +10,7 @@ This project is created by tauri-app tempalte `pnpm create tauri-app`
 
 The hard drive is almost full, so...
 
-- Smaller, build with tauri (rust)
+- Smaller, build with tauri (rust), installer size only about 5M
 - Simpler, no other features will be added, just merge hosts
 - Supports remote hosts
 
