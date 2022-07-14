@@ -44,13 +44,8 @@ export default function HostsView() {
 		if (activeHost.enable) {
 			try {
 				await dispatch({type: 'push:system-hosts', payload: null});
-			} catch (error: any) {
-				window.$toast?.({
-					title: `${error.message}`,
-					status: 'error',
-				});
-				// TODO: handle other errors
-				dispatch({type: 'required:password', payload: null});
+			} catch {
+				//
 			}
 		}
 	}, 1000);

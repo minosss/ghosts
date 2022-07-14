@@ -50,8 +50,17 @@ export const useStore = create<
 		}
 
 		if (updateSystemHost) {
-			const {hosts, password} = get();
-			await pushSystemHost(hosts, {password});
+			try {
+				const {hosts, password} = get();
+				await pushSystemHost(hosts, {password});
+			} catch (error: any) {
+				window.$toast?.({
+					title: `${error.message}`,
+					status: 'error',
+				});
+				// TODO: handle other errors
+				get().dispatch({type: 'required:password', payload: null});
+			}
 		}
 	},
 	async deleteHost(host: Host) {
