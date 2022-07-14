@@ -10,11 +10,11 @@ export function isSystem(host?: Host) {
 }
 
 export function isRemote(host?: Host): host is RemoteHost {
-	return !isUndefined(host) && host.type === 'remote';
+	return !isUndefined(host) && host.kind === 'remote';
 }
 
 export function isLocal(host?: Host): host is LocalHost {
-	return !isUndefined(host) && host.type === 'local' && host.id !== 'system';
+	return !isUndefined(host) && host.kind === 'local' && host.id !== 'system';
 }
 
 export function isDeleteable(host?: Host): host is Host {

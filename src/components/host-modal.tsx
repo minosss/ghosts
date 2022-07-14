@@ -18,6 +18,7 @@ import {
 	IconButton,
 	VStack,
 	Tooltip,
+	FormHelperText,
 } from '@chakra-ui/react';
 import {useCallback, useState} from 'react';
 import {useStore} from '../store';
@@ -25,14 +26,14 @@ import {AddIcon} from './icons';
 
 interface FormHost {
 	name: string;
-	type: 'local' | 'remote';
+	kind: 'local' | 'remote';
 	url: string;
 	interval: number;
 }
 
 const defaultForm: FormHost = {
 	name: '',
-	type: 'local',
+	kind: 'local',
 	url: '',
 	interval: 10,
 };
@@ -59,7 +60,7 @@ export default function HostModal() {
 		try {
 			await createHost({
 				name: form.name,
-				type: form.type,
+				kind: form.kind,
 				url: form.url,
 				interval: form.interval,
 			});
@@ -90,7 +91,7 @@ export default function HostModal() {
 						<VStack>
 							<FormControl>
 								<FormLabel>Type</FormLabel>
-								<RadioGroup defaultValue='local' onChange={updateField('type')}>
+								<RadioGroup defaultValue='local' onChange={updateField('kind')}>
 									<HStack spacing={6}>
 										<Radio value='local'>Local</Radio>
 										<Radio value='remote'>Remote</Radio>
@@ -100,14 +101,16 @@ export default function HostModal() {
 							<FormControl isRequired>
 								<FormLabel>Name</FormLabel>
 								<Input
+									placeholder='Name'
 									onChange={(e) => updateField('name')(e.target.value)}
 								></Input>
 							</FormControl>
-							{form.type === 'remote' && (
+							{form.kind === 'remote' && (
 								<>
 									<FormControl isRequired>
 										<FormLabel>Url</FormLabel>
 										<Input
+											placeholder='Only allows all HTTPS urls'
 											onChange={(e) => updateField('url')(e.target.value)}
 										></Input>
 									</FormControl>

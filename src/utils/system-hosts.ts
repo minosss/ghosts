@@ -8,7 +8,7 @@ import {resolveDataDir} from './fs';
 export const systemHost: Readonly<LocalHost> = {
 	id: 'system',
 	name: 'System',
-	type: 'local',
+	kind: 'local',
 };
 
 export async function readSystemHost(): Promise<string> {

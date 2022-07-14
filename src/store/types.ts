@@ -5,13 +5,14 @@ interface BaseHost {
 }
 
 export interface RemoteHost extends BaseHost {
-	type: 'remote';
+	kind: 'remote';
 	url: string;
 	interval?: number;
+	updateAt?: number;
 }
 
 export interface LocalHost extends BaseHost {
-	type: 'local';
+	kind: 'local';
 }
 
 export type Host = RemoteHost | LocalHost;

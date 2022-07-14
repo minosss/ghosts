@@ -32,24 +32,24 @@ export function clampInterval(interval: any = '10') {
 
 export async function createHost(data: {
 	name: string;
-	type: 'local' | 'remote';
+	kind: 'local' | 'remote';
 	url?: string;
 	interval?: number | string;
 }): Promise<Host> {
-	const {type = 'local', name, url, interval} = data;
+	const {kind = 'local', name, url, interval} = data;
 
 	const id = uuid();
 
 	let host;
 
 	//
-	if (type === 'remote') {
+	if (kind === 'remote') {
 		if (!url) throw new Error(`remote host url is required`);
 
 		host = {
 			id,
 			name,
-			type: 'remote',
+			kind: 'remote',
 			url,
 			interval: clampInterval(interval),
 			enable: false,
@@ -58,7 +58,7 @@ export async function createHost(data: {
 		host = {
 			id,
 			name,
-			type,
+			kind,
 			enable: false,
 		} as LocalHost;
 	}
