@@ -1,6 +1,6 @@
-import {Text, Box, List, ListItem, Switch, Flex, Tag} from '@chakra-ui/react';
+import {Text, Box, List, ListItem, Switch, Flex} from '@chakra-ui/react';
 import {useCallback} from 'react';
-import {RemoteIcon} from '../components/icons';
+import {FileIcon, RemoteIcon, SystemIcon} from '../components/icons';
 import {isRemote, isSystem} from '../utils/is';
 import type {ActiveProps, Host} from '../store/types';
 
@@ -29,6 +29,14 @@ export default function HostList({hosts = [], activeHost, onSelect, onToggle}: H
 		[onToggle]
 	);
 
+	const renderIcon = (host: Host) => {
+		if (isSystem(host)) return <SystemIcon />;
+
+		if (isRemote(host)) return <RemoteIcon />;
+
+		return <FileIcon />;
+	};
+
 	return (
 		<Box overflowY='auto' h='full'>
 			<List my={3}>
@@ -47,7 +55,7 @@ export default function HostList({hosts = [], activeHost, onSelect, onToggle}: H
 						>
 							<div>
 								<Text fontSize='sm'>
-									{host.name} {isRemote(host) && <RemoteIcon />}
+									{renderIcon(host)} {host.name}
 								</Text>
 							</div>
 							{!isSystem(host) && (
