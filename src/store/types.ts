@@ -8,7 +8,7 @@ export interface RemoteHost extends BaseHost {
 	kind: 'remote';
 	url: string;
 	interval?: number;
-	updateAt?: number;
+	updatedAt?: number;
 }
 
 export interface LocalHost extends BaseHost {
@@ -35,6 +35,8 @@ export type HostActionType =
 	| 'update:active'
 	| 'refresh:host'
 	| 'create:host'
+	| 'update:host'
+	| 'update:host:bulk'
 	| 'toggle:host'
 	| 'delete:host'
 	| 'reset:host'

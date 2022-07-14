@@ -7,10 +7,11 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import {useEffect, useState} from 'react';
+import {isArray} from '@chakra-ui/utils';
 import {install} from './utils/install';
 import HostsView from './hosts-view';
 import {useStore} from './store';
-import {readHosts} from './utils/hosts';
+import {readHosts, startInterval, stopInterval} from './utils/hosts';
 
 const theme = extendTheme(
 	withDefaultSize({
@@ -77,10 +78,18 @@ function App() {
 
 		window.$toast = toast;
 
+		startInterval((patchs) => {
+			if (isArray(patchs) && patchs.length > 0) {
+				dispatch({type: 'update:host:bulk', payload: patchs});
+			}
+		});
+
 		return () => {
+			stopInterval();
+
 			window.$toast = undefined;
 		};
-	}, [toast]);
+	}, [dispatch, toast]);
 
 	return (
 		<ChakraProvider theme={theme}>

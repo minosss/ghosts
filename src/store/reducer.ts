@@ -19,16 +19,51 @@ export default function reducer(state: StoreState, action: StoreAction): StoreSt
 				...state,
 				password: typeof state.password === 'undefined' ? '' : undefined,
 			};
-		case 'refresh:host':
+		case 'refresh:host': {
+			const active = state.hosts.find((host) => host.id === state.activeHost?.id);
 			return {
 				...state,
 				// copy the active host, reload
-				activeHost: state.activeHost && {...state.activeHost},
+				activeHost: active && {...active},
 			};
+		}
 		case 'create:host':
 			return {...state, hosts: [...state.hosts, action.payload]};
+		case 'update:host': {
+			const nextHosts = [...state.hosts];
+			const {id, ...patch} = action.payload;
+			const index = nextHosts.findIndex((host) => host.id === id);
+			if (index > 0) {
+				const nextHost = {...state.hosts[index], ...patch};
+				nextHosts.splice(index, 1, nextHost);
+
+				return {
+					...state,
+					hosts: nextHosts,
+					activeHost: state.activeHost?.id === id ? nextHost : state.activeHost,
+				};
+			}
+			break;
+		}
+		case 'update:host:bulk': {
+			const patchs = action.payload as Host[];
+			const nextHosts = [...state.hosts].map((host) => {
+				const h = patchs.find((ph) => ph.id === host.id);
+				if (h) {
+					return {...host, ...h};
+				}
+				return {...host};
+			});
+
+			return {
+				...state,
+				hosts: nextHosts,
+				activeHost: nextHosts.find((h) => h.id === state.activeHost?.id),
+			};
+			break;
+		}
 		case 'delete:host': {
-			const found = state.hosts.find((host) => host.id === action.payload);
+			const found = state.hosts.find((host) => host.id === action.payload.id);
 
 			// can't remove system-hosts
 			if (isDeleteable(found)) {

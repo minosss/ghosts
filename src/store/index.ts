@@ -22,14 +22,16 @@ export const useStore = create<
 			case 'create:host':
 				updateHosts = true;
 				break;
-			case 'delete:host':
+			case 'update:host':
+			case 'delete:host': {
 				updateHosts = true;
-				// eslint-disable-next-line no-case-declarations
-				const found = get().hosts.find((host) => host.id === action.payload);
+				const found = get().hosts.find((host) => host.id === action.payload.id);
 				if (found) {
 					updateSystemHost = Boolean(found.enable);
 				}
 				break;
+			}
+			case 'update:host:bulk':
 			case 'toggle:host':
 				updateHosts = true;
 				updateSystemHost = true;
@@ -56,7 +58,7 @@ export const useStore = create<
 		if (host.enable) {
 			await deleteHostFile(host.id);
 		}
-		return get().dispatch({type: 'delete:host', payload: host.id});
+		return get().dispatch({type: 'delete:host', payload: {id: host.id}});
 	},
 	async createHost(data: Record<string, any>) {
 		const host = await createHost(data as any);
@@ -67,6 +69,6 @@ export const useStore = create<
 		if (isRemote(host)) {
 			await updateRemoteHostFile(host.id, host.url);
 		}
-		return get().dispatch({type: 'refresh:host', payload: null});
+		return get().dispatch({type: 'refresh:host', payload: host.id});
 	},
 }));

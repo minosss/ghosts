@@ -5,7 +5,7 @@ import {EOL} from '@tauri-apps/api/os';
 import type {Host, LocalHost, RemoteHost} from '../store/types';
 import {deleteAppFile, readAppFile, writeAppFile} from './fs';
 import {uuid} from './helper';
-import {isSystem} from './is';
+import {isRemote, isSystem} from './is';
 import {readSystemHost, systemHost} from './system-hosts';
 
 const HOSTS_FILE = 'hosts.json';
@@ -107,6 +107,64 @@ export async function readRemoteHostFile(url: string) {
 }
 
 export async function updateRemoteHostFile(id: string, url: string) {
+	if (!isValidUrl) throw new Error(`invalid url ${url}`);
+
 	const text = await readRemoteHostFile(url);
 	await writeHostFile(id, text);
+	return text;
+}
+
+// is valid url
+export function isValidUrl(url: string) {
+	return /^https:\/\//.test(url);
+}
+
+function shouldUpdate(host: RemoteHost, now = Date.now()) {
+	const {url, interval = 10, updatedAt = 0} = host;
+
+	if (!isValidUrl(url)) return false;
+
+	if (now - updatedAt >= interval * 60_000) {
+		return true;
+	}
+
+	return false;
+}
+
+//
+export async function updateAllRemoteHost() {
+	const now = Date.now();
+	const hosts = await readHosts();
+
+	const patchs = [];
+	for (const host of hosts) {
+		if (isRemote(host) && shouldUpdate(host, now)) {
+			try {
+				await updateRemoteHostFile(host.id, host.url);
+				patchs.push({
+					id: host.id,
+					updatedAt: now,
+				});
+			} catch {
+				// ignore
+			}
+		}
+	}
+	return patchs;
+}
+
+let interval: number | undefined;
+
+export function startInterval(fn: (patchs: any) => void) {
+	if (interval) window.clearInterval(interval);
+
+	interval = window.setInterval(async () => {
+		const patchs = await updateAllRemoteHost();
+		if (patchs) fn(patchs);
+	}, 60_000);
+}
+
+export function stopInterval() {
+	window.clearInterval(interval);
+	interval = undefined;
 }
