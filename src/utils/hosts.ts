@@ -1,6 +1,7 @@
 import {clampValue} from '@chakra-ui/utils';
 import {join} from '@tauri-apps/api/path';
 import {getClient, ResponseType} from '@tauri-apps/api/http';
+import {EOL} from '@tauri-apps/api/os';
 import type {Host, LocalHost, RemoteHost} from '../store/types';
 import {deleteAppFile, readAppFile, writeAppFile} from './fs';
 import {uuid} from './helper';
@@ -82,7 +83,7 @@ export async function readHostFile(id: string) {
 
 export async function writeHostFile(id: string, content: string) {
 	const file = await join('data', id);
-	return writeAppFile(file, content);
+	return writeAppFile(file, content.trimEnd() + EOL);
 }
 
 export async function deleteHostFile(id: string) {
