@@ -17,7 +17,6 @@ The hard drive is almost full, so...
 Todo
 
 - [x] update remote hosts automatically
-- [ ] edit name or url
 - [ ] updater
 - [ ] secure and secure
 - [ ] alfred workflow (cutom protocol, eg: ghosts://search/{query}?)

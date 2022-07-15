@@ -1,4 +1,4 @@
-import {Text, Box, List, ListItem, Switch, Flex} from '@chakra-ui/react';
+import {Text, Box, List, ListItem, Switch, Flex, Tooltip} from '@chakra-ui/react';
 import {useCallback} from 'react';
 import {FileIcon, RemoteIcon, SystemIcon} from '../components/icons';
 import {isRemote, isSystem} from '../utils/is';
@@ -42,29 +42,35 @@ export default function HostList({hosts = [], activeHost, onSelect, onToggle}: H
 			<List my={3}>
 				{hosts.map((host) => (
 					<ListItem key={host.id} onClick={selectHost(host)}>
-						<Flex
-							mx={3}
-							px={3}
-							py={1.5}
-							userSelect='none'
-							cursor='default'
-							justifyContent='space-between'
-							alignItems='center'
-							bg={host.id === activeHost?.id ? 'gray.100' : 'transparent'}
-							borderRadius={3}
+						<Tooltip
+							placement='right'
+							hasArrow
+							label={`${host.name}\n${isRemote(host) ? host.url : ''}`}
 						>
-							<div>
-								<Text fontSize='sm'>
-									{renderIcon(host)} {host.name}
-								</Text>
-							</div>
-							{!isSystem(host) && (
-								<Switch
-									isChecked={host.enable}
-									onChange={toggleHost(host)}
-								></Switch>
-							)}
-						</Flex>
+							<Flex
+								mx={3}
+								px={3}
+								py={1.5}
+								userSelect='none'
+								cursor='default'
+								justifyContent='space-between'
+								alignItems='center'
+								bg={host.id === activeHost?.id ? 'gray.100' : 'transparent'}
+								borderRadius={3}
+							>
+								<div>
+									<Text fontSize='sm'>
+										{renderIcon(host)} {host.name}
+									</Text>
+								</div>
+								{!isSystem(host) && (
+									<Switch
+										isChecked={host.enable}
+										onChange={toggleHost(host)}
+									></Switch>
+								)}
+							</Flex>
+						</Tooltip>
 					</ListItem>
 				))}
 			</List>
