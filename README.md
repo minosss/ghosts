@@ -68,6 +68,7 @@ Found the package in the output directory `src-tauri/target/release/bundle`
 
 - need sudo password to change hosts file permissions on mac and linux `> 777 > write > 644`
 - windows, I don't know how to run command with administrator, you should ensure the hosts is writable
+- interval runs in the frontend, and runs every minute but with a delay. will move to backend after I can use rust's pointer safely
 
 ## Thanks
 
