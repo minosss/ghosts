@@ -1,6 +1,6 @@
 use tauri::{
-    AppHandle, CustomMenuItem, Manager, Menu, PackageInfo, RunEvent, SystemTray, SystemTrayEvent,
-    SystemTrayMenu, SystemTrayMenuItem, WindowEvent, Wry,
+    AppHandle, CustomMenuItem, Manager, Menu, PackageInfo, SystemTray, SystemTrayEvent,
+    SystemTrayMenu, SystemTrayMenuItem, Wry,
 };
 
 //
@@ -38,8 +38,8 @@ pub fn handle_system_tray_event(app: &AppHandle<Wry>, event: SystemTrayEvent) {
             size: _,
             ..
         } => {
-            // println!("click tray");
-            // show window?
+			let window = app.get_window("main").unwrap();
+			window.show().unwrap();
         }
         SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
             "quit" => app.exit(0),
@@ -58,33 +58,6 @@ pub fn handle_system_tray_event(app: &AppHandle<Wry>, event: SystemTrayEvent) {
             }
             _ => {}
         },
-        _ => {}
-    }
-}
-
-pub fn handle_app_event(app: &AppHandle<Wry>, event: RunEvent) {
-    match event {
-        // Application is ready (triggered only once)
-        RunEvent::Ready => {}
-        RunEvent::WindowEvent {
-            label,
-            event: WindowEvent::CloseRequested { api, .. },
-            ..
-        } => {
-            if label == "main" {
-                let window = app.get_window(&label).unwrap();
-                window.hide().unwrap();
-                //
-                let id = String::from("toggle");
-                let menu_item = app.tray_handle().get_item(&id);
-                menu_item.set_title("Show").unwrap();
-
-                api.prevent_close();
-            }
-        }
-        // RunEvent::ExitRequested { api, .. } => {
-        // 	api.prevent_exit();
-        // }
         _ => {}
     }
 }

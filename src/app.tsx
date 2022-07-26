@@ -11,7 +11,8 @@ import {isArray} from '@chakra-ui/utils';
 import {install} from './utils/install';
 import HostsView from './hosts-view';
 import {useStore} from './store';
-import {readHosts, startInterval, stopInterval} from './utils/hosts';
+import {readHosts} from './utils/hosts';
+import {useTauriEvent} from './hooks/use-tauri-event';
 
 const theme = extendTheme(
 	withDefaultSize({
@@ -73,20 +74,21 @@ function App() {
 		};
 	}, [dispatch]);
 
-	useEffect(() => {
-		// use outside the component
+	useTauriEvent<string[]>('auto_updated', (e) => {
+		if (isArray(e.payload) && e.payload.length > 0) {
+			dispatch({
+				type: 'update:host:bulk',
+				payload: e.payload.map((id) => ({id, updatedAt: Date.now()})),
+			});
 
+			toast({status: 'success', title: 'System hosts updated'});
+		}
+	});
+
+	useEffect(() => {
 		window.$toast = toast;
 
-		startInterval((patchs) => {
-			if (isArray(patchs) && patchs.length > 0) {
-				dispatch({type: 'update:host:bulk', payload: patchs});
-			}
-		});
-
 		return () => {
-			stopInterval();
-
 			window.$toast = undefined;
 		};
 	}, [dispatch, toast]);
