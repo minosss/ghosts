@@ -1,6 +1,6 @@
-import {Text, Flex, Center, HStack, Tag} from '@chakra-ui/react';
+import {Text, Flex, Center, HStack, Tag, Box} from '@chakra-ui/react';
 import {useStore} from '../store';
-import {isReadonly} from '../utils/is';
+import {isMac, isReadonly} from '../utils/is';
 import CopyHost from './copy-host';
 import DeleteHost from './delete-host';
 import HostModal from './host-modal';
@@ -11,7 +11,8 @@ export default function Navbar() {
 	const activeHost = useStore((s) => s.activeHost);
 
 	return (
-		<Flex>
+		<Flex pos='relative' h={10}>
+			<Box pos='absolute' left={0} top={0} w='full' h='full' data-tauri-drag-region />
 			<Center
 				px={3}
 				justifyContent='space-between'
@@ -26,8 +27,9 @@ export default function Navbar() {
 					verticalAlign='middle'
 					userSelect='none'
 					pointerEvents='none'
+					ml={isMac() ? 16 : 0}
 				>
-					Hosts
+					gHosts
 				</Text>
 				<HStack>
 					<HostModal></HostModal>

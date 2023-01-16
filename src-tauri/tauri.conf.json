@@ -84,7 +84,8 @@
 				"width": 900,
 				"title": "gHosts",
 				"fullscreen": false,
-				"resizable": true
+				"resizable": true,
+				"titleBarStyle": "Overlay"
 			}
 		]
 	}
