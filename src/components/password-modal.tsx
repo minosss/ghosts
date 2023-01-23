@@ -17,7 +17,7 @@ import {useEffect, useState} from 'react';
 import {useStore} from '../store';
 import {isWindows} from '../utils/is';
 
-// macOs / linux password required
+// MacOS / Linux password is required
 export default function PasswordModal() {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	const password = useStore((s) => s.password);
@@ -48,12 +48,12 @@ export default function PasswordModal() {
 						<FormLabel>Password</FormLabel>
 						<Input
 							type='password'
-							placeholder='your password'
+							placeholder='Your password'
 							value={psw}
 							onChange={(e) => setPsw(e.target.value)}
 						></Input>
 						<FormHelperText>
-							require password every time the app starts
+							Require password every time the app starts
 						</FormHelperText>
 					</FormControl>
 				</ModalBody>

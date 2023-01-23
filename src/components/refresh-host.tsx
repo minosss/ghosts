@@ -30,7 +30,7 @@ export default function RefreshHost({host}: RefreshHostProps) {
 	}, [actions, host, refreshHost]);
 
 	return (
-		<Tooltip label='refresh' hasArrow>
+		<Tooltip label='Refresh' hasArrow placement='bottom-end'>
 			<IconButton
 				isLoading={loading}
 				variant='ghost'

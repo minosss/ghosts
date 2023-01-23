@@ -35,19 +35,19 @@ export default function DeleteHost({host}: DeleteHostProps) {
 		onClose();
 	}, [deleteHost, host, onClose]);
 
+	if (isDeleteable(host) !== true) return null;
+
 	return (
 		<>
-			{isDeleteable(host) && (
-				<Tooltip label='delete' hasArrow>
-					<IconButton
-						variant='ghost'
-						colorScheme='red'
-						aria-label='delete current host'
-						onClick={onOpen}
-						icon={<TrashIcon />}
-					></IconButton>
-				</Tooltip>
-			)}
+			<Tooltip label='Delete' hasArrow placement='bottom-end'>
+				<IconButton
+					variant='ghost'
+					colorScheme='red'
+					aria-label='delete current host'
+					onClick={onOpen}
+					icon={<TrashIcon />}
+				></IconButton>
+			</Tooltip>
 			<AlertDialog
 				isOpen={isOpen}
 				onClose={onClose}

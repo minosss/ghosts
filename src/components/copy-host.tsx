@@ -23,7 +23,7 @@ export default function CopyHost({host}: CopyHostProps) {
 	}, [host]);
 
 	return (
-		<Tooltip label='copy to clipboard' hasArrow>
+		<Tooltip label='Copy to clipboard' hasArrow placement='bottom-end'>
 			<IconButton
 				variant='ghost'
 				aria-label='copy'
